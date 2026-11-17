@@ -1,0 +1,16 @@
+# Copy to .github/workflows/controls.yml in your repository. The lint resolves anchors
+# against tracked files, so it needs a checkout and nothing else.
+name: controls
+on:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  controls:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Pin to a commit of this repository once you fork or publish it.
+      - uses: OWNER/agent-controls-starter@main
+        with:
+          catalogue: controls.yaml

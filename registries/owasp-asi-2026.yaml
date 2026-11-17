@@ -1,0 +1,17 @@
+# Ids only, no titles or text. Provenance: registries/sources/owasp-asi-2026.md
+id: owasp-asi-2026
+title: OWASP Top 10 for Agentic Applications for 2026
+url: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
+retrieved: '2026-11-17'
+unit: risks
+ids:
+  - 'ASI01'
+  - 'ASI02'
+  - 'ASI03'
+  - 'ASI04'
+  - 'ASI05'
+  - 'ASI06'
+  - 'ASI07'
+  - 'ASI08'
+  - 'ASI09'
+  - 'ASI10'

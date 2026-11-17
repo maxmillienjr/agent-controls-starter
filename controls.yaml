@@ -1,0 +1,52 @@
+# Your control catalogue. Each control says what holds, which framework ids it maps to and
+# what backs it. `npx controls lint` resolves every anchor against the tracked tree and fails
+# if one is missing, skipped or not run on pull requests; `npx controls render` writes
+# CONTROLS.md. A green check means the evidence resolves, not that it is sufficient.
+#
+# The built-in registries are OWASP's LLM Top 10 (2025), OWASP's Top 10 for Agentic
+# Applications (2026) and the NIST AI RMF 1.0 core. Add your own registry files here
+# (see the README, "Add a framework"):
+#
+# registries:
+#   - governance/registries
+#
+# One control of each status, with every kind of anchor:
+#
+# controls:
+#   - id: CTL-TOOL-01
+#     title: The agent calls only tools on its allowlist, and refuses any other
+#     status: implemented                 # a test or a CI job fails if it stops holding
+#     maps:
+#       - { framework: owasp-asi-2026, ref: ASI02 }
+#     evidence:
+#       - { kind: symbol, file: src/tools.js, name: checkToolCall }   # a declaration
+#       - kind: test                                                # a test title, not skipped,
+#         file: test/agent.test.js                                  # and the pull-request job
+#         name: refuses a tool that is not on the allowlist         # that runs it
+#         workflow: ci.yml
+#         job: test
+#       - { kind: ci, workflow: ci.yml, job: audit, run: npm audit } # a job in a PR workflow
+#
+#   - id: CTL-REVIEW-01
+#     title: A new tool is approved by a second reviewer
+#     status: procedural                  # a person applies a written rule; no check does
+#     maps:
+#       - { framework: nist-ai-rmf-1.0, ref: GOVERN 3.2 }
+#     evidence:
+#       - { kind: doc, file: docs/review.md, heading: A new tool needs a second reviewer }
+#
+#   - id: CTL-MEM-01
+#     title: Conversation memory expires
+#     status: planned                     # not delivered; owner says who delivers it
+#     owner: platform team
+#     maps:
+#       - { framework: owasp-asi-2026, ref: ASI06 }
+#
+#   - id: CTL-NET-01
+#     title: Messages between agents are authenticated
+#     status: not-applicable              # excluded, with a rationale of 40+ characters
+#     maps:
+#       - { framework: owasp-asi-2026, ref: ASI07 }
+#     rationale: The agent talks to no other agent, so there is no channel to authenticate.
+
+controls: []

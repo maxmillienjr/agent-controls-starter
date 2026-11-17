@@ -1,0 +1,36 @@
+# This repository's own CI: the linter's tests, the blank catalogue, the example, and the
+# Action itself run against the example.
+name: ci
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm ci --no-audit --no-fund
+      - run: npm test
+      - name: Lint the blank catalogue
+        run: node bin/controls.mjs lint
+      - name: Lint the example
+        run: node bin/controls.mjs lint --root examples/toy-agent
+      - name: Run the example's own tests
+        working-directory: examples/toy-agent
+        run: npm test
+  action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        with:
+          root: examples/toy-agent

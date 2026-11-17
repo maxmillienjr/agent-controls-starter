@@ -1,0 +1,74 @@
+# Broken on purpose: the toy agent's catalogue with one thing wrong. See test/lint.test.mjs.
+controls:
+  - id: CTL-TOOL-01
+    title: The agent calls only tools on its allowlist, and refuses any other
+    status: implemented
+    maps:
+      - { framework: owasp-asi-2026, ref: ASI02 }
+      - { framework: owasp-llm-2025, ref: 'LLM06:2025' }
+    evidence:
+      - { kind: symbol, file: 'src/tools.js:5', name: checkToolCall }
+      - kind: test
+        file: test/agent.test.js
+        name: refuses a tool that is not on the allowlist
+        workflow: agent.yml
+        job: test
+        run: npm test
+
+  - id: CTL-COST-01
+    title: A run stops after a fixed number of model steps
+    status: implemented
+    maps:
+      - { framework: owasp-llm-2025, ref: 'LLM10:2025' }
+    evidence:
+      - { kind: symbol, file: src/agent.js, name: MAX_STEPS }
+      - kind: test
+        file: test/agent.test.js
+        name: stops when the step budget is spent
+        workflow: agent.yml
+        job: test
+
+  - id: CTL-DATA-01
+    title: Customer email addresses and phone numbers are redacted before the model sees a request
+    status: implemented
+    maps:
+      - { framework: owasp-llm-2025, ref: 'LLM02:2025' }
+    evidence:
+      - { kind: symbol, file: src/redact.js, name: redactCustomer }
+      - kind: test
+        file: test/agent.test.js
+        name: sends no email address or phone number to the model
+        workflow: agent.yml
+        job: test
+
+  - id: CTL-SUPPLY-01
+    title: A pull request fails on a high or critical advisory in a dependency
+    status: implemented
+    maps:
+      - { framework: owasp-llm-2025, ref: 'LLM03:2025' }
+    evidence:
+      - { kind: ci, workflow: agent.yml, job: audit, run: npm audit }
+
+  - id: CTL-REVIEW-01
+    title: A new tool on the allowlist is approved by a second reviewer who did not write it
+    status: procedural
+    maps:
+      - { framework: nist-ai-rmf-1.0, ref: GOVERN 3.2 }
+      - { framework: owasp-asi-2026, ref: ASI02 }
+    evidence:
+      - { kind: doc, file: docs/review.md, heading: A new tool needs a second reviewer }
+
+  - id: CTL-MEM-01
+    title: Conversation memory expires after the repair is closed
+    status: planned
+    owner: service-desk maintainers
+    maps:
+      - { framework: owasp-asi-2026, ref: ASI06 }
+    note: The agent keeps no memory between runs today, so there is nothing to expire yet.
+
+  - id: CTL-NET-01
+    title: Messages between agents are authenticated
+    status: not-applicable
+    maps:
+      - { framework: owasp-asi-2026, ref: ASI07 }
+    rationale: The toy agent talks to no other agent; the model and the tools are in-process functions, so there is no channel between agents to authenticate.

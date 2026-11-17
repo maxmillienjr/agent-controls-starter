@@ -1,0 +1,12 @@
+# Runs on a schedule only. A control that cites this job fails the lint: a nightly job
+# does not stop a pull request from merging.
+name: nightly
+on:
+  schedule:
+    - cron: '0 6 * * *'
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm test

@@ -1,0 +1,32 @@
+name: Controls lint
+description: Fail the job when a control in your catalogue cites evidence that is missing, skipped or not run on pull requests.
+inputs:
+  root:
+    description: The repository directory whose tracked files are the evidence.
+    default: '.'
+  catalogue:
+    description: The catalogue, relative to root.
+    default: controls.yaml
+  matrix:
+    description: The rendered matrix, relative to root. Defaults to CONTROLS.md beside the catalogue.
+    default: ''
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 20
+    - name: Install the linter's one dependency
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      run: npm ci --omit=dev --no-audit --no-fund --ignore-scripts
+    - name: Lint the controls
+      shell: bash
+      working-directory: ${{ inputs.root }}
+      env:
+        CATALOGUE: ${{ inputs.catalogue }}
+        MATRIX: ${{ inputs.matrix }}
+      run: |
+        args=(lint --root . --catalogue "$CATALOGUE")
+        if [ -n "$MATRIX" ]; then args+=(--matrix "$MATRIX"); fi
+        node "$GITHUB_ACTION_PATH/bin/controls.mjs" "${args[@]}"

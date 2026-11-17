@@ -1,0 +1,27 @@
+{
+  "name": "agent-controls-starter",
+  "version": "0.1.0",
+  "description": "A control catalogue for an AI agent, a linter that fails CI when cited evidence is missing or skipped, and a renderer for the matrix.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "controls": "bin/controls.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "bin",
+    "src",
+    "registries"
+  ],
+  "scripts": {
+    "test": "node --test test/lint.test.mjs",
+    "lint": "node bin/controls.mjs lint",
+    "render": "node bin/controls.mjs render",
+    "lint:example": "node bin/controls.mjs lint --root examples/toy-agent"
+  },
+  "dependencies": {
+    "yaml": "^2.8.1"
+  }
+}
