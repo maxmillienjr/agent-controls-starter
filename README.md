@@ -38,7 +38,7 @@ Nothing here is a claim of compliance with any framework.
 You need Node 20 or later and git.
 
 ```sh
-git clone <this repository> agent-controls-starter
+git clone https://github.com/maxmillienjr/agent-controls-starter.git
 cd agent-controls-starter
 npm ci
 node bin/controls.mjs lint --root examples/toy-agent

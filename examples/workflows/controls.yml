@@ -11,6 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Pin to a commit of this repository once you fork or publish it.
-      - uses: OWNER/agent-controls-starter@main
+      - uses: maxmillienjr/agent-controls-starter@main
         with:
           catalogue: controls.yaml
